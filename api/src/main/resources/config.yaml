@@ -1,0 +1,31 @@
+kumuluzee:
+  name: restaurant-service
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8080
+    http:
+      port: 8080
+  datasources:
+    - jndi-name: jdbc/RestaurantMetadataDS
+      connection-url: jdbc:postgresql://localhost:5431/restaurant-metadata
+      username: dbuser
+      password: postgres
+      pool:
+        max-size: 1
+  health:
+    servlet:
+      mapping: /health
+      enabled: true
+    checks:
+      data-source-health-check:
+        type: both
+        jndi-name: jdbc/RestaurantMetadataDS
+      disk-space-health-check:
+        type: both
+        threshold: 10000000 # 10MB
+
+rest-properties:
+  maintenance-mode: false
+  broken: false

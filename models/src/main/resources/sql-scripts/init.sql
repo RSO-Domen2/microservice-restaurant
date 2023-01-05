@@ -1,0 +1,2 @@
+INSERT INTO restaurant_metadata (name, lat, lng, street_number, street_name, postal_code, city, country, created) VALUES ('Marjanca',  46.050380, 14.468480, '13', 'Večna pot', 1000, 'Ljubljana', 'Slovenija', '2007-01-01T12:00:00Z');
+INSERT INTO menu (name, price, restaurant_id) VALUES ('vegeterijanski meni', 5.5, 1);

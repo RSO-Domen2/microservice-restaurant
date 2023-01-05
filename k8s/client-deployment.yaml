@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurant-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restaurant-microservice
+  template:
+    metadata:
+      labels:
+        app: restaurant-microservice
+    spec:
+      containers:
+        - image: vilonja/microservice-client:2023-01-04-19-59-12
+          name: restaurant-microservice
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://surus.db.elephantsql.com:5432/fqdjhram
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              value: fqdjhram
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-pass
+                  key: db-password
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: server
+            initialDelaySeconds: 20
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: server
+            initialDelaySeconds: 20
+            periodSeconds: 3
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: restaurant-microservice
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: restaurant-microservice
