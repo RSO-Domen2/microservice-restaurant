@@ -61,6 +61,7 @@ public class RestaurantMetadataResource {
     public Response getRestaurantMetadata() {
 
         List<RestaurantMetadata> restaurantMetadata = restaurantMetadataBean.getRestaurantMetadata();
+        log.info("GET "+uriInfo.getRequestUri().toString());
 
         return Response.status(Response.Status.OK).entity(restaurantMetadata).build();
     }
@@ -77,7 +78,7 @@ public class RestaurantMetadataResource {
     @Path("/{restaurantMetadataId}")
     public Response getClientMetadata(@Parameter(description = "Metadata ID.", required = true)
                                      @PathParam("restaurantMetadataId") Integer restaurantMetadataId) {
-
+        log.info("GET "+uriInfo.getRequestUri().toString());
         RestaurantMetadata restaurantMetadata = restaurantMetadataBean.getRestaurantMetadata(restaurantMetadataId);
 
         if (restaurantMetadata == null) {
@@ -99,8 +100,8 @@ public class RestaurantMetadataResource {
             description = "DTO object with restaurant metadata.",
             required = true, content = @Content(
             schema = @Schema(implementation = RestaurantMetadata.class))) RestaurantMetadata restaurantMetadata) {
-
-            restaurantMetadata = restaurantMetadataBean.createRestaurantMetadata(restaurantMetadata);
+        log.info("POST "+uriInfo.getRequestUri().toString());
+        restaurantMetadata = restaurantMetadataBean.createRestaurantMetadata(restaurantMetadata);
 
         return Response.status(Response.Status.CONFLICT).entity(restaurantMetadata).build();
 
@@ -123,7 +124,7 @@ public class RestaurantMetadataResource {
                                              required = true, content = @Content(
                                              schema = @Schema(implementation = RestaurantMetadata.class)))
                                              RestaurantMetadata restaurantMetadata){
-
+        log.info("PUT "+uriInfo.getRequestUri().toString());
         restaurantMetadata = restaurantMetadataBean.putRestaurantMetadata(restaurantMetadataId, restaurantMetadata);
 
         if (restaurantMetadata == null) {
@@ -149,7 +150,7 @@ public class RestaurantMetadataResource {
     @Path("{restaurantMetadataId}")
     public Response deleteClientMetadata(@Parameter(description = "Metadata ID.", required = true)
                                         @PathParam("restaurantMetadataId") Integer restaurantMetadataId){
-
+        log.info("DELETE "+uriInfo.getRequestUri().toString());
         boolean deleted = restaurantMetadataBean.deleteRestaurantMetadata(restaurantMetadataId);
 
         if (deleted) {
@@ -167,6 +168,7 @@ public class RestaurantMetadataResource {
     })
     @Path("{id}/menus")
     public Response getMenusForRestaurant(@PathParam("id") int id) {
+        log.info("GET "+uriInfo.getRequestUri().toString());
         List<MenuEntity> menus = restaurantMetadataBean.getRestaurantEntity(id).getMenus();
         return Response.ok(menus).build();
     }
@@ -182,6 +184,7 @@ public class RestaurantMetadataResource {
                                             @RequestBody(description = "DTO object for creating menu.", required = true, content = @Content(
                                                     schema = @Schema(implementation = MenuMetadata.class)
                                             )) MenuMetadata menuDto) {
+        log.info("POST "+uriInfo.getRequestUri().toString());
         menuDto.setRestaurantId(id);
         if(managingMenusBean.createMenu(menuDto)) {
             return Response.status(Response.Status.CREATED).build();
