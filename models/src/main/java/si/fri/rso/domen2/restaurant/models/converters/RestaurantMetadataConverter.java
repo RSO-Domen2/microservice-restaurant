@@ -26,6 +26,7 @@ public class RestaurantMetadataConverter {
     public static RestaurantMetadataEntity toEntity(RestaurantMetadata dto) {
 
         RestaurantMetadataEntity entity = new RestaurantMetadataEntity();
+        entity.setId(dto.getId());
         entity.setLat(dto.getLat());
         entity.setName(dto.getName());
         entity.setLng(dto.getLng());

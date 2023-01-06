@@ -5,12 +5,14 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.rso.domen2.restaurant.models.entities.MenuEntity;
 import si.fri.rso.domen2.restaurant.services.beans.ManagingMenusBean;
 import si.fri.rso.domen2.restaurant.services.beans.MenuBean;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -74,6 +76,8 @@ public class MenusResource {
         }
         return Response.status(Response.Status.NOT_FOUND).build();
     }
+
+
 
 
 

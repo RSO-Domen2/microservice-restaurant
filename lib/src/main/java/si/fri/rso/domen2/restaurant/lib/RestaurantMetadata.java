@@ -28,13 +28,6 @@ public class RestaurantMetadata {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public Double getLat() {
         return lat;
     }
@@ -64,9 +57,11 @@ public class RestaurantMetadata {
     public Instant getCreated() { return created; }
     public void setCreated(Instant created) { this.created = created; }
 
+    /*
     public boolean isValid() {
         return (this.name != null && this.surname != null && this.lat != null & this.lng != null);
     }
+     */
 
     public String getCity() {return city;}
     public void setCity(String city) {this.city = city;}

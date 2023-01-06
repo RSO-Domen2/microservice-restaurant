@@ -9,8 +9,10 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import si.fri.rso.domen2.restaurant.lib.MenuMetadata;
 import si.fri.rso.domen2.restaurant.lib.RestaurantMetadata;
 import si.fri.rso.domen2.restaurant.models.entities.MenuEntity;
+import si.fri.rso.domen2.restaurant.services.beans.ManagingMenusBean;
 import si.fri.rso.domen2.restaurant.services.beans.MenuBean;
 import si.fri.rso.domen2.restaurant.services.beans.RestaurantMetadataBean;
 
@@ -40,6 +42,9 @@ public class RestaurantMetadataResource {
 
     @Inject
     private MenuBean menuBean;
+
+    @Inject
+    private ManagingMenusBean managingMenusBean;
 
 
     @Context
@@ -95,12 +100,7 @@ public class RestaurantMetadataResource {
             required = true, content = @Content(
             schema = @Schema(implementation = RestaurantMetadata.class))) RestaurantMetadata restaurantMetadata) {
 
-        if (!restaurantMetadata.isValid()) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        else {
             restaurantMetadata = restaurantMetadataBean.createRestaurantMetadata(restaurantMetadata);
-        }
 
         return Response.status(Response.Status.CONFLICT).entity(restaurantMetadata).build();
 
@@ -169,6 +169,24 @@ public class RestaurantMetadataResource {
     public Response getMenusForRestaurant(@PathParam("id") int id) {
         List<MenuEntity> menus = restaurantMetadataBean.getRestaurantEntity(id).getMenus();
         return Response.ok(menus).build();
+    }
+
+    @POST
+    @Path("{id}/menus")
+    @Operation(summary = "Adding menu to the restaurant.", description = "Menu with ID is added new menu.")
+    @APIResponses({
+            @APIResponse(description = "Menu created.", responseCode = "201"),
+            @APIResponse(description = "Restaurant ID does not exist, can't create new menu.", responseCode = "404")
+    })
+    public Response createMenuForRestaurant(@Parameter(description = "Restaurant ID for which we want to create new menu.", required = true) @PathParam("id") int id,
+                                            @RequestBody(description = "DTO object for creating menu.", required = true, content = @Content(
+                                                    schema = @Schema(implementation = MenuMetadata.class)
+                                            )) MenuMetadata menuDto) {
+        menuDto.setRestaurantId(id);
+        if(managingMenusBean.createMenu(menuDto)) {
+            return Response.status(Response.Status.CREATED).build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
 

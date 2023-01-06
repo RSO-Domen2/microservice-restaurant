@@ -29,6 +29,7 @@ public class ManagingMenusBean {
         MenuEntity menuEntity = new MenuEntity();
 
         menuEntity.setName(menu.getName());
+        menuEntity.setPrice(menu.getPrice());
         menuEntity.setRestaurant(RestaurantMetadataConverter.toEntity(restaurantMetadata));
 
         return menuBean.createMenu(menuEntity);
