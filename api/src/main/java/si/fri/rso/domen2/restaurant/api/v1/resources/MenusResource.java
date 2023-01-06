@@ -8,6 +8,8 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import si.fri.rso.domen2.restaurant.lib.MenuMetadata;
+import si.fri.rso.domen2.restaurant.lib.RestaurantMetadata;
 import si.fri.rso.domen2.restaurant.models.entities.MenuEntity;
 import si.fri.rso.domen2.restaurant.services.beans.ManagingMenusBean;
 import si.fri.rso.domen2.restaurant.services.beans.MenuBean;
@@ -48,6 +50,23 @@ public class MenusResource {
         List<MenuEntity> menus = menuBean.getAllMenus(query);
         return Response.status(Response.Status.OK).entity(menus).build();
     }
+
+
+    @GET
+    @Path("/{id}")
+    public Response getMenuEntity(@Parameter(description = "Menu ID.", required = true)
+                                      @PathParam("id") Integer menu_id) {
+
+        MenuEntity menuEntity = menuBean.getMenu(menu_id);
+
+        if (menuEntity == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(menuEntity).build();
+    }
+
+
 
     @DELETE
     @Path("{id}")

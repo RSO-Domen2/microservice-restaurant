@@ -25,6 +25,14 @@ kumuluzee:
       disk-space-health-check:
         type: both
         threshold: 10000000 # 10MB
+  metrics:
+    servlet:
+      enabled: true
+    web-instrumentation:
+      - name: restaurant-endpoint
+        url-pattern: /v1/restaurant/*
+      - name: health-endpoint
+        url-pattern: /health/*
 
 rest-properties:
   maintenance-mode: false
