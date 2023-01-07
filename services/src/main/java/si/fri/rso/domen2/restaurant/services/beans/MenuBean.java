@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import javax.ws.rs.core.UriInfo;
 import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,11 @@ public class MenuBean {
     public List<MenuEntity> getAllMenus(QueryParameters query) {
         List<MenuEntity> menus = JPAUtils.queryEntities(em, MenuEntity.class, query);
         return menus;
+    }
+
+    public List<MenuEntity> getAllMenusFiltered(UriInfo uriInfo) {
+        QueryParameters qp = QueryParameters.query(uriInfo.getRequestUri().getQuery()).defaultOffset(0).build();
+        return JPAUtils.queryEntities(em, MenuEntity.class, qp);
     }
 
     public boolean createMenu(MenuEntity menuEntity) {

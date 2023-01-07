@@ -48,8 +48,9 @@ public class MenusResource {
     })
     public Response getMenus() {
         log.info("GET "+uriInfo.getRequestUri().toString());
-        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
-        List<MenuEntity> menus = menuBean.getAllMenus(query);
+        // QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        // List<MenuEntity> menus = menuBean.getAllMenus(query);
+        List<MenuEntity> menus = menuBean.getAllMenusFiltered(uriInfo);
         return Response.status(Response.Status.OK).entity(menus).build();
     }
 

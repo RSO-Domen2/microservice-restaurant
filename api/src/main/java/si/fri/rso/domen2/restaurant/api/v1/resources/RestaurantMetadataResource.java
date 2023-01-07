@@ -60,7 +60,7 @@ public class RestaurantMetadataResource {
     @GET
     public Response getRestaurantMetadata() {
 
-        List<RestaurantMetadata> restaurantMetadata = restaurantMetadataBean.getRestaurantMetadata();
+        List<RestaurantMetadata> restaurantMetadata = restaurantMetadataBean.getRestaurantMetadataFilter(uriInfo);
         log.info("GET "+uriInfo.getRequestUri().toString());
 
         return Response.status(Response.Status.OK).entity(restaurantMetadata).build();
