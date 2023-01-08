@@ -58,7 +58,13 @@ kumuluzee:
                             </Root>
                         </Loggers>
                     </Configuration>'
+  dev:
+    scan-libraries:
+      - restaurant-services
+      - restaurant-models
+      - restaurant-lib
 
 rest-properties:
   maintenance-mode: false
   broken: false
+
