@@ -19,7 +19,7 @@ public class MenuEntity {
 
     public String name;
 
-    public double price;
+    public Double price;
 
     @JsonbTransient
     @ManyToOne
@@ -40,7 +40,7 @@ public class MenuEntity {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
     public void setPrice(double price) {

@@ -8,6 +8,8 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import si.fri.rso.domen2.restaurant.lib.MenuMetadata;
+import si.fri.rso.domen2.restaurant.lib.RestaurantMetadata;
 import si.fri.rso.domen2.restaurant.models.entities.MenuEntity;
 import si.fri.rso.domen2.restaurant.services.beans.ManagingMenusBean;
 import si.fri.rso.domen2.restaurant.services.beans.MenuBean;
@@ -21,13 +23,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Path("menu")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 public class MenusResource {
-
+    private Logger log = Logger.getLogger(MenusResource.class.getName());
     @Inject
     private ManagingMenusBean managingMenusBean;
 
@@ -44,10 +47,29 @@ public class MenusResource {
                     MenuEntity.class)))
     })
     public Response getMenus() {
-        QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
-        List<MenuEntity> menus = menuBean.getAllMenus(query);
+        log.info("GET "+uriInfo.getRequestUri().toString());
+        // QueryParameters query = QueryParameters.query(uriInfo.getRequestUri().getQuery()).build();
+        // List<MenuEntity> menus = menuBean.getAllMenus(query);
+        List<MenuEntity> menus = menuBean.getAllMenusFiltered(uriInfo);
         return Response.status(Response.Status.OK).entity(menus).build();
     }
+
+
+    @GET
+    @Path("/{id}")
+    public Response getMenuEntity(@Parameter(description = "Menu ID.", required = true)
+                                      @PathParam("id") Integer menu_id) {
+        log.info("GET "+uriInfo.getRequestUri().toString());
+        MenuEntity menuEntity = menuBean.getMenu(menu_id);
+
+        if (menuEntity == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK).entity(menuEntity).build();
+    }
+
+
 
     @DELETE
     @Path("{id}")
@@ -57,6 +79,7 @@ public class MenusResource {
             @APIResponse(description = "Menu ID does not exist.", responseCode = "404")
     })
     public Response deleteMenu(@Parameter(description = "Menu ID we want to delete.", required = true) @PathParam("id") int id) {
+        log.info("DELETE "+uriInfo.getRequestUri().toString());
         if(menuBean.deleteMenu(id)) {
             return Response.ok().build();
         }
@@ -70,7 +93,8 @@ public class MenusResource {
             @APIResponse(description = "Successfully updated menu.", responseCode = "202"),
             @APIResponse(description = "Menu ID does not exist", responseCode = "404")
     })
-    public Response updateMenu(@Parameter(description = "Menu ID we want to update.", required = true) @PathParam("id") int id, MenuEntity menuEntity) { ;
+    public Response updateMenu(@Parameter(description = "Menu ID we want to update.", required = true) @PathParam("id") int id, MenuEntity menuEntity) {
+        log.info("PUT "+uriInfo.getRequestUri().toString());
         if(menuBean.updateMenu(id, menuEntity)) {
             return Response.status(Response.Status.ACCEPTED).build();
         }

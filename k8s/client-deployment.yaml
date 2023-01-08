@@ -13,7 +13,7 @@ spec:
         app: restaurant-microservice
     spec:
       containers:
-        - image: vilonja/microservice-client:2023-01-04-19-59-12
+        - image: vilonja/microservice-restaurant:2023-01-06-19-49-04
           name: restaurant-microservice
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
