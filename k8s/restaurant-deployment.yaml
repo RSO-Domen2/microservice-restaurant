@@ -13,17 +13,17 @@ spec:
         app: restaurant-microservice
     spec:
       containers:
-        - image: vilonja/microservice-restaurant:2023-01-06-19-49-04
+
           name: restaurant-microservice
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-              value: jdbc:postgresql://surus.db.elephantsql.com:5432/fqdjhram
+              value: jdbc:postgresql://surus.db.elephantsql.com:5432/glmprepe
             - name: KUMULUZEE_DATASOURCES0_USERNAME
-              value: fqdjhram
+              value: glmprepe
             - name: KUMULUZEE_DATASOURCES0_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: pg-pass
+                  name: pg-pass-restaurant
                   key: db-password
           ports:
             - containerPort: 8080
