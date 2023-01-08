@@ -31,6 +31,9 @@ kumuluzee:
         url-pattern: /v1/restaurant/*
       - name: health-endpoint
         url-pattern: /health/*
+  cors-filter:
+    servlet:
+      allow-origin: "*"
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                     <Configuration name="restaurant-logging">
